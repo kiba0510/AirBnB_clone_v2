@@ -1,11 +1,21 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
+import models
 from datetime import datetime
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+
+
+Base = declarative_base()
 
 
 class BaseModel:
     """A base class for all hbnb models"""
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -13,13 +23,18 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
         else:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            for k, v in kwargs.items():
+                if "id" not in kwargs:
+                    self.id = str(uuid.uuid4())
+                if k == updated_at or k == created_at:
+                    dt = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
+                    kwargs[k] = dt
+                if updated_at not in kwargs.keys():
+                    self.updated_at = datetime.now()
+                if created_at not in kwargs.keys():
+                    self.created_at = datetime.now()
+
             self.__dict__.update(kwargs)
 
     def __str__(self):
@@ -38,7 +53,7 @@ class BaseModel:
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
