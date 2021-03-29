@@ -1,18 +1,14 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+from models.city import City
+import models
+from os import getenv
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.place import place_amenity
 
 
 class Amenity(BaseModel, Base):
-    """"Class that Define the Amenities"""
-
-    __tablename__ = "amenities"
-    name = Column(String(128),
-                  nullable=False)
-
-    place_amenities = relationship("Place",
-                                   secondary='place_amenity',
-                                   viewonly=False)
+    """This class defines a Amenity by various attributes"""
+    __tablename__ = 'amenities'
+    name = Column(String(128), nullable=False)
