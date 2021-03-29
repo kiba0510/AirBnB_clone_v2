@@ -10,7 +10,10 @@ from sqlalchemy.orm import relationship
 
 class Amenity(BaseModel, Base):
     """This class defines a Amenity by various attributes"""
-    from models.place import Place, place_amenity
+
     __tablename__ = 'amenities'
     name = Column(String(128), nullable=False)
-    place_amenities = relationship('Place', secondary=place_amenity)
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        place_amenities = relationship('Place',
+                                       secondary='place_amenity',
+                                       back_populates='amenities')
