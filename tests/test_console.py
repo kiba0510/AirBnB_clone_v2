@@ -1,105 +1,140 @@
 #!/usr/bin/python3
-""" . """
-from models.engine.file_storage import FileStorage
-from models.base_model import BaseModel
-from models.__init__ import storage
-from console import HBNBCommand
-from unittest.mock import patch
-from models.amenity import Amenity
-from models.review import Review
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.user import User
-from io import StringIO
-import MySQLdb
-import console
+''' Test suite for the console'''
+import os
+import sys
+import models
 import unittest
 import pep8
-import sys
-import os
+from io import StringIO
+from console import HBNBCommand
+from unittest.mock import create_autospec
 
 
-class TestPep8B(unittest.TestCase):
-    """ Check for pep8 validation. """
+class test_console(unittest.TestCase):
+    ''' Test the console module'''
 
-    def test_pep8(self):
-        """ test base and test_base for pep8 conformance """
-        style = pep8.StyleGuide(quiet=True)
-        file1 = 'console.py'
-        file2 = 'tests/test_console.py'
-        result = style.check_files([file1, file2])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warning).")
+    """Check for Pep8 style conformance"""
 
-
-class TestDocsB(unittest.TestCase):
-    """ Check for documentation. """
-
-    def test_module_doc(self):
-        """ check for module documentation """
-        self.assertTrue(len(console.__doc__) > 0)
-
-    def test_class_doc(self):
-        """ check for documentation """
-        self.assertTrue(len(HBNBCommand.__doc__) > 0)
-
-    def test_method_docs(self):
-        """ check for method documentation """
-        for func in dir(HBNBCommand):
-            self.assertTrue(len(func.__doc__) > 0)
-
-
-class TestConsole(unittest.TestCase):
-    """ Check for functionaly of Console. """
+    def test_pep8_console(self):
+        """Pep8 console.py"""
+        style = pep8.StyleGuide(quiet=False)
+        errors = 0
+        file = (["console.py"])
+        errors += style.check_files(file).total_errors
+        self.assertEqual(errors, 0, 'Need to fix Pep8')
 
     def setUp(self):
-        """Setting Up """
-        self.console_o = HBNBCommand()
+        '''setup for'''
+        self.backup = sys.stdout
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
 
     def tearDown(self):
-        """Cleaning up after each test. """
-        pass
+        ''''''
+        sys.stdout = self.backup
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', 'for databases')
-    def test_create(self):
-        """ . """
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("create User")
-            lenn = len(out.getvalue())
-            self.assertTrue(lenn > 0)
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("create Lauca")
-            self.assertEqual("** class doesn't exist **\n", out.getvalue())
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("create")
-            self.assertEqual("** class name missing **\n", out.getvalue())
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("all State")
-            lenn = len(out.getvalue())
-            self.assertTrue(lenn > 0)
+    def create(self):
+        ''' create an instance of the HBNBCommand class'''
+        return HBNBCommand()
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db', 'for file')
-    def test_create(self):
-        """ . """
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("create User")
-            lenn = len(out.getvalue())
-            self.assertTrue(lenn > 0)
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("create Lauca")
-            self.assertEqual("** class doesn't exist **\n", out.getvalue())
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("create")
-            self.assertEqual("** class name missing **\n", out.getvalue())
-        with patch("sys.stdout", new=StringIO()) as out:
-            self.console_o.onecmd("all State")
-            lenn = len(out.getvalue())
-            self.assertTrue(lenn > 0)
+    def test_quit(self):
+        ''' Test quit exists'''
+        console = self.create()
+        self.assertTrue(console.onecmd("quit"))
 
+    def test_EOF(self):
+        ''' Test EOF exists'''
+        console = self.create()
+        self.assertTrue(console.onecmd("EOF"))
 
-if __name__ == "__main__":
-    unittest.main()
+    def test_all(self):
+        ''' Test all exists'''
+        console = self.create()
+        console.onecmd("all")
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
-# python3 -m unittest discover tests
-# python3 -m unittest tests/test_models/test_base_model.py
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
+    def test_show(self):
+        '''
+            Testing that show exists
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        user_id = self.capt_out.getvalue()
+        sys.stdout = self.backup
+        self.capt_out.close()
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
+        console.onecmd("show User " + user_id)
+        x = (self.capt_out.getvalue())
+        sys.stdout = self.backup
+        self.assertTrue(isinstance(x, str))
+
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
+    def test_show_class_name(self):
+        '''
+            Testing the error messages for class name missing.
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        user_id = self.capt_out.getvalue()
+        sys.stdout = self.backup
+        self.capt_out.close()
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
+        console.onecmd("show")
+        x = (self.capt_out.getvalue())
+        sys.stdout = self.backup
+        self.assertEqual("** class name missing **\n", x)
+
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
+    def test_show_no_instance_found(self):
+        '''
+            Test show message error for id missing
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        user_id = self.capt_out.getvalue()
+        sys.stdout = self.backup
+        self.capt_out.close()
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
+        console.onecmd("show User " + "124356876")
+        x = (self.capt_out.getvalue())
+        sys.stdout = self.backup
+        self.assertEqual("** no instance found **\n", x)
+
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
+    def test_create_fileStorage(self):
+        '''
+            Test that create works
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
+
+    def test_class_name(self):
+        '''
+            Testing the error messages for class name missing.
+        '''
+        console = self.create()
+        console.onecmd("create")
+        x = (self.capt_out.getvalue())
+        self.assertEqual("** class name missing **\n", x)
+
+    def test_class_name_doest_exist(self):
+        '''
+            Testing the error messages for class name missing.
+        '''
+        console = self.create()
+        console.onecmd("create Binita")
+        x = (self.capt_out.getvalue())
+        self.assertEqual("** class doesn't exist **\n", x)
