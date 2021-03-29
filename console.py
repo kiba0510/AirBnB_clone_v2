@@ -35,57 +35,6 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb)')
 
-    def precmd(self, line):
-        """Reformat command line for advanced command syntax.
-
-        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
-        (Brackets denote optional fields in usage example.)
-        """
-        _cmd = _cls = _id = _args = ''  # initialize line elements
-
-        # scan for general formating - i.e '.', '(', ')'
-        if not ('.' in line and '(' in line and ')' in line):
-            return line
-
-        try:  # parse line left to right
-            pline = line[:]  # parsed line
-
-            # isolate <class name>
-            _cls = pline[:pline.find('.')]
-
-            # isolate and validate <command>
-            _cmd = pline[pline.find('.') + 1:pline.find('(')]
-            if _cmd not in HBNBCommand.dot_cmds:
-                raise Exception
-
-            # if parantheses contain arguments, parse them
-            pline = pline[pline.find('(') + 1:pline.find(')')]
-            if pline:
-                # partition args: (<id>, [<delim>], [<*args>])
-                pline = pline.partition(', ')  # pline convert to tuple
-
-                # isolate _id, stripping quotes
-                _id = pline[0].replace('\"', '')
-                # possible bug here:
-                # empty quotes register as empty _id when replaced
-
-                # if arguments exist beyond _id
-                pline = pline[2].strip()  # pline is now str
-                if pline:
-                    # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is '}'\
-                            and type(eval(pline)) is dict:
-                        _args = pline
-                    else:
-                        _args = pline.replace(',', '')
-                        # _args = _args.replace('\"', '')
-            line = ' '.join([_cmd, _cls, _id, _args])
-
-        except Exception as mess:
-            pass
-        finally:
-            return line
-
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
@@ -113,34 +62,39 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, line):
         """ Create an object of any class"""
-        argv = args.split(' ')
-        new_dict = {}
-        value = ""
-        for i in range(1, len(argv)):
-            parameter = argv[i].split('=')
-            key = parameter[0]
-            s = parameter[1]
-            if s[0] != '"':
-                if '.' in s:
-                    value = float(s)
-                else:
-                    value = int(s)
-            else:
-                value1 = s.replace('_', ' ')
-                value = value1.replace('"', '')
-            new_dict.update({key: value})
-        if not args:
+        """Reformat command line for advanced command syntax.
+        Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
+        (Brackets denote optional fields in usage example.)
+        """
+        list_line = line.split(" ")
+        name_class = list_line[0]
+
+        if not line:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif not (name_class in HBNBCommand.classes):
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        new = HBNBCommand.classes[name_class]()
+        if len(list_line) > 1:
+            list_line = list_line[1:]
+            for argument in list_line:
+                paramters = argument.split("=")
+                if len(paramters) == 2:
+                    key = paramters[0]
+                    value = paramters[1]
+                    if value[0] == '"' and value[-1] == '"':
+                        value = value[1:-1].replace("_", " ")
+                    else:
+                        try:
+                            value = int(value)
+                        except ValueError:
+                            value = float(value)
+                    setattr(new, key, value)
+        new.save()
+        print(new.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -222,11 +176,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            clas = storage.all(HBNBCommand.classes[args])
+            for k, v in clas.items():
+                print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -292,7 +246,6 @@ class HBNBCommand(cmd.Cmd):
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
-
             args = args.partition(' ')
 
             # if att_name was not quoted arg
