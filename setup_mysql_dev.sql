@@ -1,7 +1,7 @@
--- Script that prepares a MySQL server for the project
+-- Create states table in hbnb_dev_dbs with some data
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
-CREATE USER IF NO EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
-GRANT SELECT ON perfomance_schema.* TO 'hbnb_dev'@'localhost';
-GRANT ALL PRIVILEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'locahost';
-FLUSH PRIVILEGES;
+CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 USE hbnb_dev_db;
+GRANT ALL PRIVILEGES ON `hbnb_dev_db` .* TO 'hbnb_dev'@'localhost';
+GRANT SELECT ON `performance_schema` .* TO 'hbnb_dev'@'localhost';
+FLUSH PRIVILEGES;
