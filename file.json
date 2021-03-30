@@ -1,67 +1,109 @@
 {
-    "State.dd0e082c-6841-4770-9e5a-6e3fb4b77e52": {
-        "created_at": "2021-03-29T17:21:44.822684",
-        "__class__": "State",
-        "updated_at": "2021-03-29T17:21:44.822719",
-        "name": "Arizona",
-        "id": "53d99e98-3585-4afd-8ef8-845cf14191e7"
-    },
-    "Place.7a56aa4a-5b44-41c3-bb05-44b28be01233": {
-        "created_at": "2021-03-29T17:21:44.823732",
-        "number_rooms": 4,
-        "__class__": "Place",
-        "updated_at": "2021-03-29T17:21:44.823830",
-        "max_guest": 10,
-        "number_bathrooms": 2,
-        "name": "My little house",
-        "user_id": "0001",
-        "latitude": 37.773972,
-        "id": "6596b440-63b8-404e-ba84-77f7de2fccfa",
-        "price_by_night": 300,
-        "city_id": "0001",
-        "longitude": -122.431297
-    },
-    "State.74e152d1-ed51-42bf-8e1c-1b67b567d106": {
-        "created_at": "2021-03-29T17:21:44.821872",
-        "__class__": "State",
-        "updated_at": "2021-03-29T17:21:44.821909",
-        "name": "California",
-        "id": "663805cd-c47d-45c2-8088-8e22f5ca8d05"
-    },
-    "State.918fcd3c-5ce5-4d21-b482-84ff802287ee": {
-        "created_at": "2021-03-29T17:17:15.612578",
-        "__class__": "State",
-        "updated_at": "2021-03-29T17:17:15.612640",
-        "name": "California",
-        "id": "5c8a54ed-fcb5-4c88-818e-544957934451"
-    },
-    "State.ee268ce0-600b-4215-b0f8-b3dd447c68b2": {
-        "created_at": "2021-03-29T17:17:15.613219",
-        "__class__": "State",
-        "updated_at": "2021-03-29T17:17:15.613260",
-        "name": "Arizona",
-        "id": "531baed9-e1be-4aa6-b898-d6442d88b309"
-    },
     "Place.71f3657b-e372-4242-9c37-35d6d7207cc7": {
-        "created_at": "2021-03-29T17:17:15.614286",
-        "number_rooms": 4,
         "__class__": "Place",
-        "updated_at": "2021-03-29T17:17:15.614391",
         "max_guest": 10,
-        "number_bathrooms": 2,
-        "name": "My little house",
+        "created_at": "2021-03-29T17:17:15.614286",
         "user_id": "0001",
-        "latitude": 37.773972,
-        "id": "0c655f4a-3b0b-49d8-9226-e96dda9b6216",
-        "price_by_night": 300,
+        "number_bathrooms": 2,
+        "id": "47501173-6988-411e-8895-a432c994c751",
+        "number_rooms": 4,
+        "updated_at": "2021-03-29T17:17:15.614391",
+        "name": "My little house",
         "city_id": "0001",
-        "longitude": -122.431297
+        "longitude": -122.431297,
+        "latitude": 37.773972,
+        "price_by_night": 300
+    },
+    "State.4d1c8696-7bcb-414b-b869-a74cd4bb5574": {
+        "__class__": "State",
+        "id": "c98b3928-ecf2-4e97-996a-154256d84a94",
+        "updated_at": "2021-03-30T18:09:39.414622",
+        "name": "Nevada",
+        "created_at": "2021-03-30T18:09:39.414609"
+    },
+    "State.7375f66e-8cb0-4829-9b08-0f1216aab59c": {
+        "__class__": "State",
+        "id": "3936a75b-d199-4f15-872d-4d397310b9a4",
+        "updated_at": "2021-03-30T18:09:25.655128",
+        "name": "Nevada",
+        "created_at": "2021-03-30T18:09:25.655115"
+    },
+    "State.08d11f56-135e-4331-992d-3e0f9c90cb52": {
+        "__class__": "State",
+        "id": "3b22fd9d-e12b-499f-ba72-de4093960cb2",
+        "updated_at": "2021-03-30T18:10:42.564227",
+        "name": "Nevada",
+        "created_at": "2021-03-30T18:10:42.564214"
     },
     "State.c39c96f5-4af3-409e-bc71-756d11deadc8": {
-        "created_at": "2021-03-30T00:51:07.209185",
         "__class__": "State",
+        "id": "7e8cf92a-8ef3-4cd0-ab3e-6fb10abb1840",
         "updated_at": "2021-03-30T00:51:07.209218",
         "name": "California",
-        "id": "c39c96f5-4af3-409e-bc71-756d11deadc8"
+        "created_at": "2021-03-30T00:51:07.209185"
+    },
+    "State.918fcd3c-5ce5-4d21-b482-84ff802287ee": {
+        "__class__": "State",
+        "id": "ab8ab597-9f5b-4ca7-938f-5c1e83bcffbb",
+        "updated_at": "2021-03-29T17:17:15.612640",
+        "name": "California",
+        "created_at": "2021-03-29T17:17:15.612578"
+    },
+    "State.ee268ce0-600b-4215-b0f8-b3dd447c68b2": {
+        "__class__": "State",
+        "id": "1052236e-e0db-49ba-a6af-9141e00a9453",
+        "updated_at": "2021-03-29T17:17:15.613260",
+        "name": "Arizona",
+        "created_at": "2021-03-29T17:17:15.613219"
+    },
+    "State.dd0e082c-6841-4770-9e5a-6e3fb4b77e52": {
+        "__class__": "State",
+        "id": "e3b895a8-298a-49a3-b7aa-2bab4e4d41d1",
+        "updated_at": "2021-03-29T17:21:44.822719",
+        "name": "Arizona",
+        "created_at": "2021-03-29T17:21:44.822684"
+    },
+    "Place.7a56aa4a-5b44-41c3-bb05-44b28be01233": {
+        "__class__": "Place",
+        "max_guest": 10,
+        "created_at": "2021-03-29T17:21:44.823732",
+        "user_id": "0001",
+        "number_bathrooms": 2,
+        "id": "e7fc39fe-35ed-4edf-8379-3a3603ca3425",
+        "number_rooms": 4,
+        "updated_at": "2021-03-29T17:21:44.823830",
+        "name": "My little house",
+        "city_id": "0001",
+        "longitude": -122.431297,
+        "latitude": 37.773972,
+        "price_by_night": 300
+    },
+    "State.650b5dad-8c75-409a-bb0f-9eb684061410": {
+        "__class__": "State",
+        "id": "b1f5b746-e2e4-43fe-8bed-70e51003829d",
+        "updated_at": "2021-03-30T17:39:45.866312",
+        "name": "California",
+        "created_at": "2021-03-30T17:39:45.866276"
+    },
+    "State.c25c33cc-fe65-4fb3-9c20-26c308b3b709": {
+        "__class__": "State",
+        "id": "f371a8e8-7496-43a4-a5dd-689680fdc5aa",
+        "updated_at": "2021-03-30T18:03:30.204248",
+        "name": "California",
+        "created_at": "2021-03-30T18:03:30.204214"
+    },
+    "State.a04de7ac-cdbf-43ed-9968-54eed9b77a72": {
+        "__class__": "State",
+        "id": "a04de7ac-cdbf-43ed-9968-54eed9b77a72",
+        "updated_at": "2021-03-30T18:10:58.820280",
+        "name": "Nevada",
+        "created_at": "2021-03-30T18:10:58.820268"
+    },
+    "State.74e152d1-ed51-42bf-8e1c-1b67b567d106": {
+        "__class__": "State",
+        "id": "1942e403-9b75-452d-9ebd-9dbc7146752d",
+        "updated_at": "2021-03-29T17:21:44.821909",
+        "name": "California",
+        "created_at": "2021-03-29T17:21:44.821872"
     }
 }
