@@ -13,14 +13,25 @@ def close_storage(self):
     storage.close()
 
 
-@app.route('/cities_by_states', strict_slashes=False)
+@app.route("/states_list", strict_slashes=False)
+def states_list():
+    states = storage.all("State")
+    return render_template("7-states_list.html", states=states)
+
+
+@app.route("/cities_by_states", strict_slashes=False)
 def cities_by_states():
-    """ Cities inside states. """
-    state = list(storage.all('State').values())
-    state.sort(key=lambda state: state.name)
-    city = list(storage.all('City').values())
-    city.sort(key=lambda city: city.name)
-    return render_template('8-cities_by_states.html', list1=state, list2=city)
+    state_obj = storage.all("State")
+    city_obj = storage.all("City")
+    states = list()
+    cities = list()
+    for state, value in state_obj.items():
+        states.append(value)
+    for city, value in city_obj.items():
+        cities.append(value)
+    return render_template("8-cities_by_states.html",
+                           states=states,
+                           cities=cities)
 
 
 if __name__ == '__main__':
